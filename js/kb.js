@@ -27,9 +27,9 @@ var kb = (
      * @alias kb.constructor
      * @namespace
      */
-	function(){
+	function(kb){
 		
-		if (kb) return kb;
+		if (kb!==undefined) return kb;
 		
 		/**
 	     * @protected
@@ -39,6 +39,7 @@ var kb = (
 	     */
 		var _self = {};
 		
+		
 		/**
 	     * @protected
 	     * @alias kb.constructor._private
@@ -46,6 +47,10 @@ var kb = (
 	     * @description
 	     	<p>List of private methods that can be used inside the constructor.</p>
 	     	<p>All properties listed in <b>_private</b> are only accessible using using <b>_private.&lt;propertyName&gt;</b> inside kb.constructor</p>
+	     * @property {function} _private.defineProperty - {@link kb.constructor._private.defineProperty (this)} Replaces Object.defineProperty when not supported
+	     * @property {function} _private.defineProperties - {@link kb.constructor._private.defineProperties (this)} Replaces Object.defineProperties when not supported
+	     * @property {function} _private.getOwnPropertyNames - {@link kb.constructor._private.getOwnPropertyNames (this)} Replaces Object.getOwnPropertyNames when not supported
+	     * @property {function} _private.getOwnPropertyDescriptor - {@link kb.constructor._private.getOwnPropertyDescriptor (this)} Replaces Object.getOwnPropertyDescriptor when not supported
 	     * @property {function} _private.getKBObjectDefinition - {@link kb.constructor._private.getKBObjectDefinition (this)} Applies default object definition properties
 		 * @property {array} _private.iModelPrototype - {@link kb.constructor._private.iModelPrototype (this)} Collection of {@link kb.constructor.iModel Model} Constructor prototype properties
 		 * @property {array} _private.iPanelPrototype - {@link kb.constructor._private.iPanelPrototype (this)} Collection of {@link kb.constructor.iPanel Panel} Constructor prototype properties
@@ -53,7 +58,148 @@ var kb = (
 		 * @property {function} _private.wrapInstanceMethod - {@link kb.constructor._private.wrapInstanceMethod (this)} Wrapper to avoid prototypical methods of {@link kb.constructor.iModel Models} and {@link kb.constructor.iPanel Panels} instances been called when dumped
 	     */
 		var _private = {
-					
+			
+			/**
+			 * @method kb.constructor._private.defineProperty
+		 	 * @param {object} obj - Object to be redifined
+		 	 * @param {string} key - Property inside the object to be redifined
+		 	 * @param {object} options - Configuration object to modify the default definition set
+		 	 * @returns {object} object to be used with Object.defineProperty 
+		 	 * @description 
+		 	 <p>When <b>Object.defineProperty</b> is not fully supported (eg. IE8 and previous), the wrapper simply set a new value for the specified property key in the object destination.</p> 
+		 	 <p>
+		 	 	"options" can contain: {@link kb.constructor._private.getKBObjectDefinition (see getKBObjectDefinition)}:
+		 	 	<i>
+		 	 	<br>{
+		 	 		<br>&nbsp;&nbsp;&nbsp;&nbsp;<b>configurable:</b> false
+		 	 		<br>&nbsp;&nbsp;&nbsp;&nbsp;, <b>enumerable:</b> true
+		 	 		<br>&nbsp;&nbsp;&nbsp;&nbsp;, <b>writable:</b> false
+		 	 	<br>}
+		 	 	</i>
+		 	 </p>
+		 	 * @example var obj = _private.defineProperty(obj,"property",_private.getKBObjectDefinition("property_value"))
+		 	 * //obj["property"] value: {configurable: false, enumerable: true, writable: false, value: "property_value"}
+		 	 * 
+		 	 * @example var obj = _private.defineProperty(obj,"property",_private.getKBObjectDefinition("property_value",{configurable: true}))
+		 	 * //obj["property"] value: {configurable: true, enumerable: true, writable: false, value: "property_value"}
+		 	 */
+		 	defineProperty: (function(){
+		 		var _defineProperty;
+				try{
+					Object.defineProperty({},"x",{});
+					_defineProperty = function(obj,key,options){
+						Object.defineProperty(obj,key,options);
+						return obj;
+					};
+				} catch(e){
+					_defineProperty = function(obj,key,options){
+						options = options || {};
+						obj[key] = options.value || null;
+						return obj;
+					};
+				}
+		 		return _defineProperty;
+		 	})()
+		 	
+		 	/**
+			 * @method kb.constructor._private.defineProperties
+		 	 * @param {object} obj - Object to be redifined
+		 	 * @param {object} props - Property inside the object to be redifined
+		 	 * @returns {object} object to be used with Object.defineProperty 
+		 	 * @description 
+		 	 <p>When <b>Object.defineProperties</b> is not fully supported (eg. IE8 and previous), the wrapper simply set new values for the specified property keys in the object destination.</p> 
+		 	 <p>
+		 	 	<b>options</b> must be defined inside <b>props</b>, they can contain {@link kb.constructor._private.getKBObjectDefinition (getKBObjectDefinition)}:
+		 	 	<i>
+		 	 	<br>{
+		 	 		<br>&nbsp;&nbsp;&nbsp;&nbsp;<b>configurable:</b> false
+		 	 		<br>&nbsp;&nbsp;&nbsp;&nbsp;, <b>enumerable:</b> true
+		 	 		<br>&nbsp;&nbsp;&nbsp;&nbsp;, <b>writable:</b> false
+		 	 	<br>}
+		 	 	</i>
+		 	 </p>
+		 	 * @example var obj = _private.defineProperties(obj,{"property":_private.getKBObjectDefinition("property_value")},)
+		 	 * //obj["property"] value: {configurable: false, enumerable: true, writable: false, value: "property_value"}
+		 	 * 
+		 	 * @example var obj = _private.defineProperties(obj,{"property":_private.getKBObjectDefinition("property_value",{configurable: true})})
+		 	 * //obj["property"] value: {configurable: true, enumerable: true, writable: false, value: "property_value"}
+		 	 */
+		 	, defineProperties: (function(){
+		 		var _defineProperties;
+				try{
+					Object.defineProperties({},{"x":{}});
+					_defineProperties = function(obj,props){
+						Object.defineProperties(obj,props);
+						return obj;
+					};
+				} catch(e){
+					_defineProperties = function(obj,props){
+						props = props || {};
+						for (var p in props){
+							obj[p] = props[p].value || null;
+						}
+						return obj;
+					};
+				}
+		 		return _defineProperties;
+		 	})()
+		 	
+		 	/**
+			 * @method kb.constructor._private.getOwnPropertyNames
+		 	 * @param {object} obj - Object to extract own properties from
+		 	 * @returns {array} list of obect's owned properties  
+		 	 * @description 
+		 	 <p>When <b>Object.getOwnPropertyNames</b> is not fully supported (eg. IE8 and previous), the wrapper loop through an object properties returning those NOT inherited by prototype (own properties).</p>
+		 	 * @example var props = _private.getOwnPropertyNames({x:"something"})
+		 	 * //props value: ["x"]
+		 	 */
+		 	, getOwnPropertyNames: (function(){
+				var _getOwnPropertyNames;
+				try{
+					Object.getOwnPropertyNames({});
+					_getOwnPropertyNames = function(obj){
+						return Object.getOwnPropertyNames(obj);
+					};
+				} catch(e){
+					_getOwnPropertyNames = function(obj){
+						var names = [];
+						for (var k in obj)if (obj.hasOwnProperty(k))names.push(k);
+						return names; 
+					};
+				}
+		 		return _getOwnPropertyNames;
+		 	})()
+		 	
+		 	/**
+			 * @method kb.constructor._private.getOwnPropertyDescriptor
+		 	 * @param {object} obj - Object to extract property the definition from
+		 	 * @param {string} key - Key name of the property to extract the definition from
+		 	 * @returns {object} Definition object for a property in an object   
+		 	 * @description 
+		 	 <p>When <b>Object.getOwnPropertyDescriptor</b> is not fully supported (eg. IE8 and previous), the wrapper returns the default configuration object from {@link kb.constructor._private.getKBObjectDefinition _private.getKBObjectDefinition} and its value extended.</p>
+		 	 <p>When <b>Object.getOwnPropertyDescriptor</b> is not fully supported (eg. IE8 and previous), the wrapper returns undefined if the property doesn't exsits in the object.</p>
+		 	 * @example var props = _private.getOwnPropertyDescriptor({x:"something"},"x")
+		 	 * //props value: {value: "something", writable: false, enumerable: true, configurable: false}
+		 	 * 
+		 	 * var props = _private.getOwnPropertyDescriptor({x:"something"},"y")
+		 	 * //props value: undefined
+		 	 */
+		 	, getOwnPropertyDescriptor: (function(){
+		 		var _getOwnPropertyDescriptor;
+				try{
+					Object.getOwnPropertyDescriptor({x:null},"x");
+					_getOwnPropertyDescriptor = function(obj,key){
+						return Object.getOwnPropertyDescriptor(obj,key);
+					};
+				} catch(e){
+					_getOwnPropertyDescriptor = function(obj,key){
+						if (obj[key]==undefined) return undefined;
+						return _private.getKBObjectDefinition(obj[key]);
+					};
+				}
+		 		return _getOwnPropertyDescriptor;
+		 	})()
+			
 			/**
 			 * @method kb.constructor._private.getKBObjectDefinition
 		 	 * @param {any} value - Default value for the new property
@@ -77,7 +223,7 @@ var kb = (
 		 	 * var property = _private.getKBObjectDefinition("property_value",{configurable: true})
 		 	 * //property value: {configurable: true, enumerable: true, writable: false, value: "property_value"}
 		 	 */
-			getKBObjectDefinition: function(value,extension){
+		 	, getKBObjectDefinition: function(value,extension){
 				var _props = {
 					configurable: false
 					, enumerable: true
@@ -127,20 +273,21 @@ var kb = (
 					if (this.models) for (name in this.models) this.models[name].dump(type);
 
 					if (type==undefined || type=="max"){
-						for (i in _obj.prototype) Object.defineProperty(this,i,{configurable:false,enumerable:false,writable:false,value: null});
-						for (i in this.constructor.prototype) Object.defineProperty(this,i,{configurable:false,enumerable:false,writable:false,value: null});
+						for (i in _obj.prototype) _private.defineProperty(this,i,{configurable:false,enumerable:false,writable:false,value: null});
+						for (i in this.constructor.prototype) _private.defineProperty(this,i,{configurable:false,enumerable:false,writable:false,value: null});
 					}
+
 					if (type=="min" || type=="max"){
-						var _props = Object.getOwnPropertyNames(this);
+						var _props = _private.getOwnPropertyNames(this);
 						i =  _props.length;
 						//while(i--) delete this[_props[i]];
 						while(i--) {
-							//console.log(_props[i],Object.getOwnPropertyDescriptor(this,_props[i]))
-							Object.defineProperty(this,_props[i],_public.extend(Object.getOwnPropertyDescriptor(this,_props[i]),{configurable:false,enumerable:false,writable:false,value: null},true));
+							//console.log(_props[i],_private.getOwnPropertyDescriptor(this,_props[i]))
+							_private.defineProperty(this,_props[i],_public.extend(_private.getOwnPropertyDescriptor(this,_props[i]),{configurable:false,enumerable:false,writable:false,value: null},true));
 						}
 					}
 					
-					Object.defineProperty(this,"dumped",{
+					_private.defineProperty(this,"dumped",{
 						configurable: false
 						, enumerable: true
 						, writable: false
@@ -467,7 +614,7 @@ var kb = (
 		 	 * @description 
 		 	 <p>
 		 	 	Attached exstensiones can be overwritten, but only calling <b>extendModel()</b> a second time 
-		 	 	<br/>or redifining the constructor object property: <i><b>Object.defineProperty(Model,"extension",definingProperties)</b></i>.
+		 	 	<br/>or redifining the constructor object property: <i><b>_private.defineProperty(Model,"extension",definingProperties)</b></i>.
 		 	 	<br/><br/>Native methods contained in list <b>_private.iModelPrototype</b> cannot be overwritten.
 		 	 </p>
 		 	 * @example
@@ -484,7 +631,7 @@ var kb = (
 			, extendModel: function(name,extension){
 				if (_public.type(name) != "string" || iModel.objects[name]===undefined || _public.type(extension) != "object") return false;
 				var _model_proto = [""].concat(_private.iModelPrototype).concat([""]).join();
-				for (prop in extension) if (_model_proto.indexOf(","+prop+",")<0) Object.defineProperty(iModel.objects[name].prototype,prop,_private.getKBObjectDefinition(extension[prop],{configurable:true}));
+				for (prop in extension) if (_model_proto.indexOf(","+prop+",")<0) _private.defineProperty(iModel.objects[name].prototype,prop,_private.getKBObjectDefinition(extension[prop],{configurable:true}));
 				return iModel.objects[name];
 			}
 			
@@ -568,7 +715,7 @@ var kb = (
 				if (clean) for (var i in iModel.objects[name].inst) iModel.objects[name].inst[i].dump(dump);
 				var _objects = _public.clone(iModel.objects);
 				delete _objects[name];
-				Object.defineProperty(iModel,"objects",_private.getKBObjectDefinition(_objects,{configurable:true}));
+				_private.defineProperty(iModel,"objects",_private.getKBObjectDefinition(_objects,{configurable:true}));
 				return true;
 			}
 			
@@ -642,7 +789,7 @@ var kb = (
 		 	 * @description 
 		 	 <p>
 		 	 	Attached exstensiones can be overwritten, but only calling <b>extendPanel()</b> a second time 
-		 	 	<br/>or redifining the constructor object property: <i><b>Object.defineProperty(Panel,"extension",definingProperties)</b></i>.
+		 	 	<br/>or redifining the constructor object property: <i><b>_private.defineProperty(Panel,"extension",definingProperties)</b></i>.
 		 	 	<br/><br/>Native methods contained in list <b>_private.iPanelPrototype</b> cannot be overwritten.
 		 	 </p>
 		 	 * @example
@@ -661,7 +808,7 @@ var kb = (
 				var _panel_proto = [""].concat(_private.iPanelPrototype).concat([""]).join();
 				for (prop in extension) {
 					if (_panel_proto.indexOf(","+prop+",")<0) {
-						Object.defineProperty(iPanel.objects[name].prototype,prop,_private.getKBObjectDefinition(extension[prop],{configurable:true}));
+						_private.defineProperty(iPanel.objects[name].prototype,prop,_private.getKBObjectDefinition(extension[prop],{configurable:true}));
 					}
 				}
 				return iPanel.objects[name],"test";
@@ -748,7 +895,7 @@ var kb = (
 				if (clean) for (var i in iPanel.objects[name].inst) iPanel.objects[name].inst[i].dump(dump);
 				var _objects = _public.clone(iPanel.objects);
 				delete _objects[name];
-				Object.defineProperty(iPanel,"objects",_private.getKBObjectDefinition(_objects,{configurable:true}));
+				_private.defineProperty(iPanel,"objects",_private.getKBObjectDefinition(_objects,{configurable:true}));
 				return true;
 			}
 			/**@ignore*/
@@ -818,7 +965,7 @@ var kb = (
 					/**
 					 * _obj instances properties are defined with own properties "index" and "list"    
 					 */
-					Object.defineProperties(this,{
+					_private.defineProperties(this,{
 						"index" :{
 							configurable: true
 							, enumerable: true
@@ -843,7 +990,7 @@ var kb = (
 				 * _obj prototype is setted up with all the properties and methods defined for the iModel constructor, and "type" is added as own property for the iModel contructor    
 				 */
 				_obj.prototype = this;
-				Object.defineProperties(_obj.prototype,{
+				_private.defineProperties(_obj.prototype,{
 					"type": {
 						configurable: false
 						, enumerable: true
@@ -857,7 +1004,7 @@ var kb = (
 			 	 */
 				var _objects = _public.clone(iModel.objects);
 				_objects[mType] = _obj;
-				Object.defineProperty(iModel,"objects",_private.getKBObjectDefinition(_objects,{configurable:true}));
+				_private.defineProperty(iModel,"objects",_private.getKBObjectDefinition(_objects,{configurable:true}));
 				
 				/**
 				 * extension are addded when preloaded when defined in iModel contructor creation     
@@ -872,9 +1019,9 @@ var kb = (
 			 * @memberof kb.constructor.iModel
 			 * @description 
 			 	<p>Collection of iModel constructor's instances</p>
-			 	<p>The <b>objects</b> collection can only be overwritten using <i><b>Object.defineProperty</b></i> </p>
+			 	<p>The <b>objects</b> collection can only be overwritten using <i><b>_private.defineProperty</b></i> </p>
 			 */
-			Object.defineProperty(iModel,"objects",{
+			_private.defineProperty(iModel,"objects",{
 				configurable: true
 				, enumerable: true
 				, writable: false
@@ -890,8 +1037,8 @@ var kb = (
 			var _loadList = function(list){
 				var _list_prop = _public.clone(_properties["list"]);
 				_list_prop.value=(arguments.length==1 && (_public.type(list)=="array"||_public.type(list)=="object")?list:[].slice.call(arguments))||[];
-				Object.defineProperty(this,"list",_list_prop);
-				Object.defineProperty(this,"templist",_list_prop);
+				_private.defineProperty(this,"list",_list_prop);
+				_private.defineProperty(this,"templist",_list_prop);
 				return this;
 			};
 			
@@ -916,7 +1063,7 @@ var kb = (
 					}
 				}
 				_templist_prop.value=_list;
-				Object.defineProperty(this,"templist",_templist_prop);
+				_private.defineProperty(this,"templist",_templist_prop);
 				return this.templist;
 			};
 			
@@ -929,8 +1076,8 @@ var kb = (
 			var _cleanList = function(){
 				var _list_prop = _public.clone(_properties["list"]);
 				_list_prop.value=[];
-				Object.defineProperty(this,"list",_list_prop);
-				Object.defineProperty(this,"templist",_list_prop);
+				_private.defineProperty(this,"list",_list_prop);
+				_private.defineProperty(this,"templist",_list_prop);
 				return this;
 			};
 			
@@ -990,7 +1137,7 @@ var kb = (
 			
 			/**Defining prototypical properties for the iModel constructor*/
 			for (prop in _properties) {
-				Object.defineProperty(iModel.prototype,prop,_properties[prop]);
+				_private.defineProperty(iModel.prototype,prop,_properties[prop]);
 				_private.iModelPrototype.push(prop);
 			}
 			
@@ -1047,7 +1194,7 @@ var kb = (
 					 * iModel contructor "prototype.models" property is maintained
 					 */
 					while(i--) _props.models.value[_models[i]] = new iModel.objects[_models[i]];
-					Object.defineProperties(this,_props);
+					_private.defineProperties(this,_props);
 					
 					_obj.inst[_obj.index] = this;
 					_obj.index++;
@@ -1060,7 +1207,7 @@ var kb = (
 				 * _obj prototype is setted up with all the properties and methods defined for the iPanel constructor, and "type" and "models" are added as own property for the iPanel contructor
 				 */
 				_obj.prototype = this;
-				Object.defineProperties(_obj.prototype,{
+				_private.defineProperties(_obj.prototype,{
 					"type": {
 						configurable: false
 						, enumerable: true
@@ -1080,7 +1227,7 @@ var kb = (
 			 	 */
 				var _objects = _public.clone(iPanel.objects);
 				_objects[pType] = _obj;
-				Object.defineProperty(iPanel,"objects",_private.getKBObjectDefinition(_objects,{configurable:true}));
+				_private.defineProperty(iPanel,"objects",_private.getKBObjectDefinition(_objects,{configurable:true}));
 				
 				/**
 				 * extension are addded when preloaded when defined in iPanel contructor creation     
@@ -1095,9 +1242,9 @@ var kb = (
 			 * @memberof kb.constructor.iPanel
 			 * @description 
 			 	<p>Collection of iPanel constructor's instances</p>
-			 	<p>The <b>objects</b> collection can only be overwritten using <i><b>Object.defineProperty</b></i> </p>
+			 	<p>The <b>objects</b> collection can only be overwritten using <i><b>_private.defineProperty</b></i> </p>
 			 */
-			Object.defineProperty(iPanel,"objects",{
+			_private.defineProperty(iPanel,"objects",{
 				configurable: true
 				, enumerable: true
 				, writable: false
@@ -1139,7 +1286,7 @@ var kb = (
 			
 			/**Defining prototypical properties for the iPanel constructor*/
 			for (prop in _properties) {
-				Object.defineProperty(iPanel.prototype,prop,_properties[prop]);
+				_private.defineProperty(iPanel.prototype,prop,_properties[prop]);
 				_private.iPanelPrototype.push(prop);
 			}
 			
@@ -1149,8 +1296,8 @@ var kb = (
 		
 		/**Defining public properties and methods contained in <b>_public</b> for <b>kb</b> adding them to <b>_self</b>. <b>kb</b> public properties and methods cannot be overwritten */
 		//Switch codes below to manage public kb properties one at the time
-		for (var key in _public) Object.defineProperty(_self,key,_private.getKBObjectDefinition(_public[key]));
-		/*Object.defineProperties(_self,{
+		for (var key in _public) _private.defineProperty(_self,key,_private.getKBObjectDefinition(_public[key]));
+		/*_private.defineProperties(_self,{
 			"clone": _private.getKBObjectDefinition(_public.clone)
 			, "extend": _private.getKBObjectDefinition(_public.extend)
 			, "stringify": _private.getKBObjectDefinition(_public.stringify)
@@ -1166,4 +1313,4 @@ var kb = (
 		
 		return _self;
 	}
-)();
+)(kb||undefined);

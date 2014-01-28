@@ -74,6 +74,98 @@
 	
         <tr>
             
+                <td class="name"><code>_private.defineProperty</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><a href="kb.constructor._private.html#defineProperty">(this)</a> Replaces Object.defineProperty when not supported</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>_private.defineProperties</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><a href="kb.constructor._private.html#defineProperties">(this)</a> Replaces Object.defineProperties when not supported</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>_private.getOwnPropertyNames</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><a href="kb.constructor._private.html#getOwnPropertyNames">(this)</a> Replaces Object.getOwnPropertyNames when not supported</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>_private.getOwnPropertyDescriptor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><a href="kb.constructor._private.html#getOwnPropertyDescriptor">(this)</a> Replaces Object.getOwnPropertyDescriptor when not supported</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
                 <td class="name"><code>_private.getKBObjectDefinition</code></td>
             
             
@@ -210,7 +302,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="kb.js.html">kb.js</a>, <a href="kb.js.html#line55">line 55</a>
+        , line 60
     </li></ul></dd>
     
     
@@ -289,7 +381,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="kb.js.html">kb.js</a>, <a href="kb.js.html#line91">line 91</a>
+        , line 237
     </li></ul></dd>
     
     
@@ -354,7 +446,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="kb.js.html">kb.js</a>, <a href="kb.js.html#line99">line 99</a>
+        , line 245
     </li></ul></dd>
     
     
@@ -376,6 +468,387 @@
         <h3 class="subsection-title">Methods</h3>
         
         <dl>
+            
+<dt>
+    <h4 class="name" id="defineProperties"><span class="type-signature">&lt;static> </span>defineProperties<span class="signature">(obj, props)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>When <b>Object.defineProperties</b> is not fully supported (eg. IE8 and previous), the wrapper simply set new values for the specified property keys in the object destination.</p> 
+		 	 <p>
+		 	 	<b>options</b> must be defined inside <b>props</b>, they can contain <a href="kb.constructor._private.html#getKBObjectDefinition">(getKBObjectDefinition)</a>:
+		 	 	<i>
+		 	 	<br>{
+		 	 		<br>&nbsp;&nbsp;&nbsp;&nbsp;<b>configurable:</b> false
+		 	 		<br>&nbsp;&nbsp;&nbsp;&nbsp;, <b>enumerable:</b> true
+		 	 		<br>&nbsp;&nbsp;&nbsp;&nbsp;, <b>writable:</b> false
+		 	 	<br>}
+		 	 	</i>
+		 	 </p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Object to be redifined</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Property inside the object to be redifined</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        , line 104
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    object to be used with Object.defineProperty
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">object</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+    <pre class="prettyprint"><code> var obj = _private.defineProperties(obj,{"property":_private.getKBObjectDefinition("property_value")},)//obj["property"] value: {configurable: false, enumerable: true, writable: false, value: "property_value"}</code></pre>
+
+    <pre class="prettyprint"><code> var obj = _private.defineProperties(obj,{"property":_private.getKBObjectDefinition("property_value",{configurable: true})})//obj["property"] value: {configurable: true, enumerable: true, writable: false, value: "property_value"}</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="defineProperty"><span class="type-signature">&lt;static> </span>defineProperty<span class="signature">(obj, key, options)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>When <b>Object.defineProperty</b> is not fully supported (eg. IE8 and previous), the wrapper simply set a new value for the specified property key in the object destination.</p> 
+		 	 <p>
+		 	 	"options" can contain: <a href="kb.constructor._private.html#getKBObjectDefinition">(see getKBObjectDefinition)</a>:
+		 	 	<i>
+		 	 	<br>{
+		 	 		<br>&nbsp;&nbsp;&nbsp;&nbsp;<b>configurable:</b> false
+		 	 		<br>&nbsp;&nbsp;&nbsp;&nbsp;, <b>enumerable:</b> true
+		 	 		<br>&nbsp;&nbsp;&nbsp;&nbsp;, <b>writable:</b> false
+		 	 	<br>}
+		 	 	</i>
+		 	 </p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Object to be redifined</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Property inside the object to be redifined</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Configuration object to modify the default definition set</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        , line 62
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    object to be used with Object.defineProperty
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">object</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+    <pre class="prettyprint"><code> var obj = _private.defineProperty(obj,"property",_private.getKBObjectDefinition("property_value"))//obj["property"] value: {configurable: false, enumerable: true, writable: false, value: "property_value"}</code></pre>
+
+    <pre class="prettyprint"><code> var obj = _private.defineProperty(obj,"property",_private.getKBObjectDefinition("property_value",{configurable: true}))//obj["property"] value: {configurable: true, enumerable: true, writable: false, value: "property_value"}</code></pre>
+
+    
+</dd>
+
+        
             
 <dt>
     <h4 class="name" id="dumpInstance"><span class="type-signature">&lt;static> </span>dumpInstance<span class="signature">()</span><span class="type-signature"> &rarr; {undefined}</span></h4>
@@ -422,7 +895,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="kb.js.html">kb.js</a>, <a href="kb.js.html#line107">line 107</a>
+        , line 253
     </li></ul></dd>
     
     
@@ -619,7 +1092,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="kb.js.html">kb.js</a>, <a href="kb.js.html#line57">line 57</a>
+        , line 203
     </li></ul></dd>
     
     
@@ -667,6 +1140,318 @@
         <h5>Example</h5>
         
     <pre class="prettyprint"><code> var property = _private.getKBObjectDefinition("property_value")//property value: {configurable: false, enumerable: true, writable: false, value: "property_value"}var property = _private.getKBObjectDefinition("property_value",{configurable: true})//property value: {configurable: true, enumerable: true, writable: false, value: "property_value"}</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getOwnPropertyDescriptor"><span class="type-signature">&lt;static> </span>getOwnPropertyDescriptor<span class="signature">(obj, key)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>When <b>Object.getOwnPropertyDescriptor</b> is not fully supported (eg. IE8 and previous), the wrapper returns the default configuration object from <a href="kb.constructor._private.html#getKBObjectDefinition">_private.getKBObjectDefinition</a> and its value extended.</p>
+		 	 <p>When <b>Object.getOwnPropertyDescriptor</b> is not fully supported (eg. IE8 and previous), the wrapper returns undefined if the property doesn't exsits in the object.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Object to extract property the definition from</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Key name of the property to extract the definition from</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        , line 173
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Definition object for a property in an object
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">object</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code> var props = _private.getOwnPropertyDescriptor({x:"something"},"x")//props value: {value: "something", writable: false, enumerable: true, configurable: false}var props = _private.getOwnPropertyDescriptor({x:"something"},"y")//props value: undefined</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getOwnPropertyNames"><span class="type-signature">&lt;static> </span>getOwnPropertyNames<span class="signature">(obj)</span><span class="type-signature"> &rarr; {array}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>When <b>Object.getOwnPropertyNames</b> is not fully supported (eg. IE8 and previous), the wrapper loop through an object properties returning those NOT inherited by prototype (own properties).</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Object to extract own properties from</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        , line 147
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    list of obect's owned properties
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">array</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code> var props = _private.getOwnPropertyNames({x:"something"})//props value: ["x"]</code></pre>
 
     
 </dd>
@@ -812,7 +1597,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="kb.js.html">kb.js</a>, <a href="kb.js.html#line155">line 155</a>
+        , line 302
     </li></ul></dd>
     
     
@@ -886,7 +1671,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Thu Oct 10 2013 11:46:00 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Tue Jan 28 2014 16:08:50 GMT-0000 (GMT)
 </footer>
 
 <script> prettyPrint(); </script>
